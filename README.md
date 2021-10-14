@@ -2,7 +2,7 @@
 > Java8의 맛은?
 
 <p align="center">
-<img src="https://media.giphy.com/media/nzvnS3VZKuOV2WRVmu/giphy.gif" width="200px">
+<img src="https://media.giphy.com/media/hsZiNa1JND0QHPrg3T/giphy.gif" width="200px">
 </p>
 
 ## Study Guide
