@@ -1,6 +1,9 @@
 # Java 8 Study
 > Java8의 맛은?
 
+<p align="center">
+<img src="https://media.giphy.com/media/nzvnS3VZKuOV2WRVmu/giphy.gif" width="200px">
+</p>
 
 ## Study Guide
 - 1주차 : 함수형 인터페이스와 람다
