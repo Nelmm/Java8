@@ -17,3 +17,10 @@
 
 ## 문서 업로드 규칙
 - git에 올리는 문서 파일명 / 내부 md 규칙 등을 상의해보아요 ㅎㅎ
+
+
+## Collaborator
+
+<img src="https://avatars.githubusercontent.com/u/42997924?v=4" width=100> | <img src="https://avatars.githubusercontent.com/u/17822723?v=4" width=100> | <img src="https://avatars.githubusercontent.com/u/52964858?v=4" width=100> |
+:---: | :---: | :---: |
+영준([@jun108059](https://github.com/jun108059)) | 창섭([@ventulus95](https://github.com/ventulus95)) | 의성([@gowoonsori](https://github.com/gowoonsori)) |
