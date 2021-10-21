@@ -6,7 +6,7 @@
 </p>
 
 ## Study Guide
-- 1주차 : 함수형 인터페이스와 람다
+- 1주차 : [함수형 인터페이스와 람다](/함수형%20인터페이스와%20람다.md)
 - 2주차 : 인터페이스의 변화 / Stream
 - 3주차 : Optional / Date / Time
 - 4주차 : CompletableFuture / annotation
