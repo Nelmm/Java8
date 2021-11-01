@@ -105,11 +105,13 @@ default void printNameUpperCase(){
 
 
 2. Object 타입이 제공하는 메서드는 기본메서드로 정의가 불가능하다.
+
 ![error](https://github.com/gowoonsori/my-tech/blob/master/java/image/default-method-error.png)
 
 3. 인터페이스의 구현체는 이 default 메서드를 ovverride가 가능하다.
 
 4. 같은 이름의 default method를 가진 인터페이스를 여러개 구현할때는 override해주어야 한다.
+
 ![erro2r](https://github.com/gowoonsori/my-tech/blob/master/java/image/annotation.png)
 
 구현하려는 인터페이스가 같은 이름의 default 메서드를 가지고 있다면 위 사진과 같이 에러가 발생하기 때문에 재정의 해주거나 사용하려는 인터페이스를 지정할 수 있다.
