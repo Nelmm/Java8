@@ -5,8 +5,9 @@
 ## Study Guide
 - 1주차 : [함수형 인터페이스와 람다](/1-함수형-인터페이스와-람다)
 - 2주차 : [인터페이스의 변화 / Stream](/2-인터페이스의-변화+Stream)
-- 3주차 : Optional / Date / Time
-- 4주차 : CompletableFuture / annotation
+- 3주차 : [Optional / Date / Time](/3-Optional과Date-Time)
+- 4주차 : [CompletableFuture](4-CompletableFuture)
+- 5주차 : [ETC & 회고](5-ETC)
 - Reference : [인프런 백기선님 강의](https://www.inflearn.com/course/the-java-java8)
 
 ## Study Rule
@@ -16,7 +17,7 @@
 - 매주 문서 담당자는 공유한 내용을 정리하여 GitHub에 올린다.
 
 ## 문서 업로드 규칙
-- 개인 공부는 주차별 Personal 폴더에 자유롭게 정리해서 공유한다.
+- 개인 공부는 주차별 폴더에 자유롭게 정리해서 공유한다.
 - 문서 담당자는 주차별 폴더에 README.md에 정리하여 작성한다.
 
 ## 주차별 발표 및 문서 정리 담당자
@@ -27,6 +28,7 @@
 | `2주차` | 의성 - 창섭 - 영준 |     영준    |
 | `3주차` | 창섭 - 영준 - 의성 |     의성    |
 | `4주차` | 영준 - 의성 - 창섭 |     창섭    |
+| `5주차` | 의성 - 창섭 - 영준 |     영준    |
 
 ## Collaborator
 
