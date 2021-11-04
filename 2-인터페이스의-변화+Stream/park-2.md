@@ -1,0 +1,215 @@
+# Stream
+
+## 1. Stream 소개
+
+> 연속된 데이터를 처리하는 오퍼레이션들의 모음
+
+<img src = "https://user-images.githubusercontent.com/42997924/140324289-8529f61a-5c59-42aa-8075-2a92412b2960.gif" width="50%" height="50%">
+
+🔼 [이미지 출처](https://weibo.com/2856003072/JnaSbeEnJ?type=comment)
+
+- `stream` 은 `컨베이어 벨트`와 비슷하다.
+- 컨베이어 벨트에 떡조각(데이터)들을 흘려보내면서 반죽을 하고, 앙금을 쌓고 (map),  불량품은 빼고(filter) 포장을 해서(collect) 내보낸다.
+
+### 1-1. Stream의 특징
+
+1. 데이터를 담고 있는 저장소(컬렉션)이 아니다.
+2. Functional in nature.
+- stream은 처리하는 데이터 소스를 변경하지 않는다.
+- 즉 내가 `A`라는 데이터를 수정한다고 해서 원본데이터가 수정되는 것은 아니라는 의미!
+
+```java
+public static void main(String[] args) {
+    List<String> names = new ArrayList<>();
+    names.add("yj");
+
+    Stream<String> stringStream = names.stream().map(String::toUpperCase);
+    names.forEach(System.out::println);
+}
+
+/*
+[실행 결과]
+yj
+*/
+```
+
+3. 스트림으로 처리하는 데이터는 오직 한 번만 처리한다.
+    - 컨베이어 벨트에서 데이터들이 한 번 지나간뒤 다시 돌아오지 않음.
+
+4. 무제한의 데이터일수도 있다.
+    - 이 경우 Short Circuit 메소드를 사용해서 제한할 수 있습니다.
+
+5. 중개 오퍼레이션은 근본적으로 `lazy`하다.
+    - 여러 중개 오퍼레이션들을 메소드 체이닝을 하더라도 그 시점에서 코드가 수행되지는 않음.
+    - 모든 중개 오퍼레이션의 실행 시기는 종료 오퍼레이션의 호출시점!
+    - 따라서 중개 오퍼레이션의 반환타입은 또 다른 stream
+```java
+public static void main(String[] args) {
+    List<String> names = new ArrayList<>();
+    names.add("yj");
+    names.add("youngjun");
+    names.add("spring");
+    names.add("java8");
+
+    Stream<String> stringStream = names.stream().map(s->{
+        System.out.println(s);
+        return s.toUpperCase();
+    });
+    names.forEach(System.out::println);
+}
+```
+
+- `names.stream().map(s->{ ... });`
+    - stream의 중개오퍼레이터를 사용하는 순간에는 코드가 수행되지 않습니다. 그렇기 때문에 중개오퍼레이션 map 안에 있는 출력문이 수행되지 않습니다.  수행시키기위해서는 스트림 파이프라인을 정의해야합니다.
+
+6. 손쉽게 병렬 처리를 할 수 있다.
+    - 지금껏 구현한 대부분의 예제코드에서는 forEach를 통해 단순한 반복 출력했다.
+    - 그런데 여기서 조건문이 추가되고 로직이 추가될수록 stream을 통해 구현할수록 간결해지기 때문에 stream을 쓰는 것 외에도 기본적인 for문이나 for-of문으로는 로직들을 병렬적으로 처리하는게 쉽지 않다.
+    - 하지만, parallelStream()을 이용하면 손쉽게 병렬처리를 할 수 있다.
+
+```java
+public static void main(String[] args) {
+    List<String> names = new ArrayList<>();
+    names.add("yj");
+    names.add("youngjun");
+    names.add("spring");
+    names.add("java8");
+
+    List<String> collect = names.parallelStream().map(s->{
+        System.out.println(s + " " + Thread.currentThread().getName());
+        return s.toUpperCase();
+    }).collect(Collectors.toList());
+
+    collect.forEach(System.out::println);
+}
+```
+- `주의할 점`
+    - 사실상 멀티 스레드를 이용한다고 성능이 무조건 좋은 것은 아니며 오히려 느려질 가능성이 더 높다.
+    - 대부분의 경우 그냥 `stream`을 쓰는게 나으며 정말 큰데이터를 다룰 때 성능 테스트 후 `parallelStream()`을 사용하면 된다.
+
+## 2. 스트림 파이프라인
+
+> 스트림이라는 컨베이어 벨트에 0개 혹은 다수의 중개 오퍼레이터(intermediate operation)과 한개의 종료 오퍼레이션(terminal operation)으로 구성. 이 스트림은 반드시 하나의 종료 오퍼레이션이 있어야 하며, 만약 종료 오퍼레이션이 없다면, 스트림은 존재하지만 코드 수행은 되지 않는다.
+
+스트림의 데이터 소스는 오직 터미널 오퍼레이션을 실행할 때에만 처리한다!
+
+### 2-1. 중개 오퍼레이션
+
+> Stream을 리턴한다!
+
+- Stateless/Stateful 오퍼레이션으로 더 상세하게 구분할 수도 있다.
+- 대부분 Stateless지만 distinct나 sorted처럼 이전 소스 데이터를 참조해야 하는 오퍼레이션은 Stateful 오퍼레이션.
+- `filter, map, limit, skip, sorted, ...`
+
+### 2-2. 종료 오퍼레이션
+> Stream을 리턴하지 않는다!
+
+- `collect, allmatch, count, forEach, min, max...`
+
+```java
+public static void main(String[] args) {
+        List<String> names = new ArrayList<>();
+        names.add("hansol");
+        names.add("toby");
+        names.add("catsbi");
+        names.add("mijeong");
+
+        List<String> collect = names.stream().map(s -> {
+            System.out.println(s);
+            return s.toUpperCase();
+        }).collect(Collectors.toList());
+        collect.forEach(System.out::println);
+    }
+```     
+
+## 3. Stream API
+
+> stream api를 예제를 통해 알아보자.
+
+1. 걸러내기
+    - Filter(Predicate)
+    - stream에서 특정 조건(Predicate)을 만족하는 엘리먼트만 새로운 스트림으로 반환
+2. 변경하기
+    - Map(Function) 또는 FlatMap(Function)
+    - 각각의 요소에서 특정요소만 꺼내거나 혹은 변경하여 새로운 스트림으로 반환
+    - flatMap의 경우 Array나 Object로 래핑되어있는 내용물을 꺼내어 하나로 합친  스트림으로 생성 후 반환
+3. 생성하기
+    - generate(Supplier) 또는 Iterator(T seed, UnaryOperator)
+    - seed 로부터 UnaryOperator 을 무제한으로 반복하는 스트림 반환
+    - ex: 랜덤 무제한 스트림
+4. 스트림에 있는 데이터가 특정 조건을 만족하는지 확인
+    - anyMatch(), allMatch(), nonMatch()
+    - 스트림의 엘리먼트를 돌며 특정 조건을 만족하는지 확인
+    - ex1:  스트림의 있는 모든 값이 10보다 작은지 확인(allMatch)
+    - ex2: 스트림의 제목 중 "Test"가 들어가는 제목이 있는지 확인(anyMatch)
+5. 개수 세기
+    - count()
+    - ex1: 10보다 작은 수의 갯수를 센다.
+6. 스트림을 데이터 하나로 뭉치기
+    - reduce(identity, ByFunction), collect(), sum(), max()
+    - ex1: 모든 숫자 합 구하기
+    - ex2: 모든 데이터를 하나의 리스트 혹은 Set에 옮겨 담기
+
+```java
+public static void main(String[] args) {
+    List<OnlineClass> springClasses = new ArrayList<>();
+    springClasses.add(new OnlineClass(1, "spring boot", true));
+    springClasses.add(new OnlineClass(2, "spring data jpa", true));
+    springClasses.add(new OnlineClass(3, "spring mvc", false));
+    springClasses.add(new OnlineClass(4, "spring core", false));
+    springClasses.add(new OnlineClass(5, "rest api development", false));
+
+    List<OnlineClass> javaClasses = new ArrayList<>();
+    javaClasses.add(new OnlineClass(6, "The Java, Test", true));
+    javaClasses.add(new OnlineClass(7, "The Java, Code mainpulation", true));
+    javaClasses.add(new OnlineClass(8, "The Java 8 to 11", false));
+
+    List<List<OnlineClass>> keesunEvents = new ArrayList<>();
+    keesunEvents.add(springClasses);
+    keesunEvents.add(javaClasses);
+
+
+    System.out.println("spring으로 시작하는 수업");
+    springClasses.stream()
+            .filter(oc -> oc.getTitle().startsWith("spring"))
+            .forEach(System.out::println);
+
+    System.out.println("closed되지 않은 수업");
+    springClasses.stream()
+            .filter(Predicate.not(OnlineClass::isClosed))
+            .forEach(System.out::println);
+
+    System.out.println("수업 이름만 모아서 스트림 만들기");
+    Stream<String> springTitleStream = springClasses.stream()
+            .map(OnlineClass::getTitle);
+    springTitleStream.forEach(System.out::println);
+
+    System.out.println("두 수업 목록에 들어있는 모든 수업 아이디 출력");
+    keesunEvents.stream()
+            .flatMap(Collection::stream)
+            .forEach(oc-> System.out.println(oc.getId()));
+
+    System.out.println("10부터 1씩 증가하는 무제한 스트림 중에서 앞에 10개 빼고 최대 10개 까지만");
+    Stream.iterate(10, i -> i+1)
+            .skip(10)
+            .limit(10)
+            .forEach(System.out::println);
+
+    System.out.println("자바 수업 중에 Test가 들어있는 수업이 있는지 확인");
+    boolean test = javaClasses.stream().
+            anyMatch(oc -> oc.getTitle().contains("Test"));
+    System.out.println(test);
+
+    System.out.println("스프링 수업 중에 제목이 spring이 들어간 제목만 모아서 List로 만들기");
+    List<String> spring = springClasses.stream()
+            .filter(oc -> oc.getTitle().contains("spring"))
+            .map(OnlineClass::getTitle)
+            .collect(Collectors.toList());
+    spring.forEach(System.out::println);
+}
+```
+
+## Reference
+
+- [백기선 인프런 강의 : 더 자바, Java8](https://www.inflearn.com/course/the-java-java8/dashboard)
+- [Catsbi's DLog : Stream](https://catsbi.oopy.io/5a5d3981-7f25-443b-bc8c-15d270935cd7)
