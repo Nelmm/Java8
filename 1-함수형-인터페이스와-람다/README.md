@@ -728,7 +728,7 @@ public class ex/Lambda2 {
 
 ## 💫 원본 글의 출처
 
-의성: https://github.com/gowoonsori/my-tech/blob/master/java/java8/lamda.md
+의성: https://github.com/gowoonsori/my-tech/blob/master/java/java8/lambda.md
 
 창섭: https://ventulus95.notion.site/JAVA-8-ab2c018bfa1a4f23b2be591c3d51fa80
 
