@@ -68,7 +68,7 @@ if (progress != null) {
 
 ### 1-2. Optional 주의 사항
 
-> 1️⃣ **Optional은 return type 에만 사용하는 것이 좋다.**
+> 1️⃣ **Optional은 return type 에만 사용하는 것이 좋다.**
 >
 
 ```java
@@ -165,7 +165,7 @@ Optional<Address> address; // Address 타입의 객체를 감쌀 수 있는 Opti
 
 2. **Optional.of()**
     - null이 아닌 객체를 담고 있는 Optional 객체를 생성
-    - null이 넘어올 경우, NPE를 던지기 때문에 **주의해서 사용하자!**
+    - null이 넘어올 경우, NPE를 던지기 때문에 **주의해서 사용하자!**
 
         ```java
         Optional<Member> maybeMember = Optional.of(aMember);
@@ -173,8 +173,8 @@ Optional<Address> address; // Address 타입의 객체를 감쌀 수 있는 Opti
 
 3. **Optional.ofNullable()**
     - null인지 아닌지 확신할 수 없는 객체를 담고 있는 Optional 객체를 생성
-    - `Optional.empty()`와 `Optional.ofNullable(value)`를 합쳐놓은 메소드로 이해하면 편하다.
-    - null이 넘어올 경우, NPE를 던지지 않고 `Optional.empty()`와 동일하게 비어 있는 Optional 객체를 얻어온다.
+    - `Optional.empty()`와 `Optional.ofNullable(value)`를 합쳐놓은 메소드로 이해하면 편하다.
+    - null이 넘어올 경우, NPE를 던지지 않고 `Optional.empty()`와 동일하게 비어 있는 Optional 객체를 얻어온다.
     - 해당 객체가 null인지 아닌지 자신이 없는 상황에서는 이 메소드를 사용하자.
 
     ```java
@@ -202,7 +202,7 @@ Optional<Address> address; // Address 타입의 객체를 감쌀 수 있는 Opti
 3. **orElseGet(Supplier<? extends X>)**
     - null일 경우 넘어온 함수형 인자를 통해 생성된 객체를 반환
     - `orElse(T other)`의 게으른 버전
-    - 비어있는 경우에만 함수가 호출되기 때문에 `orElse(T other)` 대비 성능상 이점을 기대할 수 있음.
+    - 비어있는 경우에만 함수가 호출되기 때문에 `orElse(T other)` 대비 성능상 이점을 기대할 수 있음.
 4. **orElseThrow(Supplier<? extends X> exceptionSupplier)**
     - null일 경우 넘어온 함수형 인자를 통해 생성된 예외를 던진다.
     - `default : NoSuchElementException`
@@ -275,12 +275,12 @@ public String getCityOfMemberFromOrder(Order order) {
 
 > **2️⃣ map : 메소드 체이닝 설명**
 >
-1. `ofNullable()` 정적 팩토리 메소드를 호출하여 Order 객체를 Optional로 감싼다.
-    - 혹시 Order 객체가 null인 경우를 대비하여 `of()` 대신에 `ofNullable()`을 사용하는 것.
-2. 3번의 `map()` 메소드의 연쇄 호출을 통해서 Optional 객체를 3번 변환한다.
+1. `ofNullable()` 정적 팩토리 메소드를 호출하여 Order 객체를 Optional로 감싼다.
+    - 혹시 Order 객체가 null인 경우를 대비하여 `of()` 대신에 `ofNullable()`을 사용하는 것.
+2. 3번의 `map()` 메소드의 연쇄 호출을 통해서 Optional 객체를 3번 변환한다.
     - 매 번 다른 메소드 레퍼런스를 인자로 넘겨서 Optional에 담긴 객체의 타입을 바꿔준다.
-    - `Optional<Order>` -> `Optional<Member>` -> `Optional<Address>` -> `Optional<String>`
-3. 마무리 작업으로 `orElse()` 메소드를 호출하여 이 전 과정을 통해 얻은 Optional이 비어있을 경우, 디폴트로 사용할 도시 이름을 세팅해주면 된다.
+    - `Optional<Order>` -> `Optional<Member>` -> `Optional<Address>` -> `Optional<String>`
+3. 마무리 작업으로 `orElse()` 메소드를 호출하여 이 전 과정을 통해 얻은 Optional이 비어있을 경우, 디폴트로 사용할 도시 이름을 세팅해주면 된다.
 
 > **3️⃣ fileter를 사용해보자.**
 >
