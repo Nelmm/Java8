@@ -150,7 +150,7 @@ public static void main(String[] args) {
 
 ### 2-****3. 기간을 표현하는 방법****
 
-1. `**Period**`
+1. `Period`
    - 날짜 기간 단위를 표현할 때 사용
 2. `**Duration**`
    - 시간 단위 기간을 표현할 때 사용
