@@ -148,18 +148,3 @@ Temporary Items
 .apdisk
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,intellij+all,java
-
-# Gitbook
-park.md
-park-1.md
-park-2.md
-chang.md
-hong.md
-
-1-함수형-인터페이스와-람다/park.md
-2-인터페이스의-변화+Stream/chang.md
-2-인터페이스의-변화+Stream/hong.md
-3-Optional과Date-Time/창섭.md
-3-Optional과Date-Time/hong.md
-3-Optional과Date-Time/park-1.md
-3-Optional과Date-Time/park-2.md
