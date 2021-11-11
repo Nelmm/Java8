@@ -34,6 +34,7 @@ public interface Foo {
     }
 }
 ```
+
 ```java
 public static void main(String[] args){
       Foo foo = new DefaultFoo();
@@ -47,14 +48,15 @@ public static void main(String[] args){
 
 ```java
 public interface Foo {
-    void printName();    
+    void printName();  
     default void printNameUpperCase() {
         System.out.println(getName().toUpperCase());
     }
-    String getName(); // Name 값이 항상 있다고 보장할 수 없다.                        
+    String getName(); // Name 값이 항상 있다고 보장할 수 없다.                      
     // name = null -> NullPointException
 }
 ```
+
 - **컴파일 에러는 아니지만 구현체에 따라 런타임 에러 발생 가능**
 - **반드시 문서화** (`@ImplSpec` 자바독 태그 사용)
 
@@ -71,10 +73,10 @@ default void printNameUpperCase() {
 이래도 문제가 발생하는 경우는 구현 클래스에서 `Overriding` 을 이용해 재정의 할 수 있다.
 
 - `주의할 점` **Object가 제공하는 기능**은 default 메소드로 제공할 수 없다.
-    - `equals`, `hashCode` 등
-    - 구현체가 재정의 해야한다!
-    - 인터페이스에서 추상 메서드로 선언하는 것은 괜찮다.
-        - 모두 공통으로 제공하기 때문에 추상 메서드로 분류하지 않는다.
+  - `equals`, `hashCode` 등
+  - 구현체가 재정의 해야한다!
+  - 인터페이스에서 추상 메서드로 선언하는 것은 괜찮다.
+    - 모두 공통으로 제공하기 때문에 추상 메서드로 분류하지 않는다.
 - 본인이 수정할 수 있는 인터페이스만 수정 가능하다.
 - 인터페이스를 상속받는 인터페이스에서 다시 추상 메소드로 변경할 수 있다.
 
@@ -87,7 +89,7 @@ public interface Foo {
     }
 }
 public interface Bar extends Foo {
-    void getNameUpperCase();  // 추상 메서드로 선언한 경우 구현 클래스에서 재정의 필수    
+    void getNameUpperCase();  // 추상 메서드로 선언한 경우 구현 클래스에서 재정의 필수  
     // 추상 메서드로 선언 하지 않은 경우 상위 인터페이스 그대로 사용 가능
 }
 ```
@@ -95,22 +97,23 @@ public interface Bar extends Foo {
 ```java
 public interface Foo {
     default void getNameUpperCase() {
-        System.out.println("Foo");    
+        System.out.println("Foo");  
     }
 }
 public interface Bar {
     default void getNameUpperCase() {
-        System.out.println("Bar");    
+        System.out.println("Bar");  
     }
 }
 public class Test implements Foo, Bar {
     ...
-      // @Override      
-      // public void printNameUpperCase() {      
-      //    ...      
+      // @Override    
+      // public void printNameUpperCase() {    
+      //    ...    
       // }
 }
 ```
+
 > `Error`: **DefaultFoo inherits unrelated defaults for printNameUpperCase() from types Foo and Bar**
 
 - Bar, Foo 중 무엇을 사용할지 모르기 때문에 **컴파일 에러** 발생
@@ -138,12 +141,11 @@ public class App {
     public static void main(String[] args) {
         Foo foo = new DefaultFoo();
         foo.hello();
-        
+      
         Foo.helloAll(); // static 메소드 사용
     }
 }
 ```
-
 
 ## 2. 자바8 API의 기본 메소드와 스태틱 메소드
 
@@ -156,6 +158,7 @@ JAVA8 에서 추가된 기본 메소드로 인해 API 에 변화에 대해 알�
 > 순회를 편하게 할 수 있다!
 
 **forEach()**
+
 ```java
 public static void main(String[] args) {
     List<String> names = new ArrayList<>();
@@ -165,18 +168,19 @@ public static void main(String[] args) {
     names.add("mijeong");
 
     names.forEach(System.out::println);
-		
+	
     // for (String name : names) {
     //    System.out.println(name);
     // }
 }
 ```
+
 1. `names.forEach(System.out::println)`
-    - forEach 는 내부 엘리먼트를 순회하며 각각의 요소들을 파라미터로 전달된 일급함수에 Functional Interface인 Consumer가 들어오고 처리.
-    - 단순 출력만 하기 때문에 메소드 레퍼런스 기능을 이용해 간결하게 작성!
+   - forEach 는 내부 엘리먼트를 순회하며 각각의 요소들을 파라미터로 전달된 일급함수에 Functional Interface인 Consumer가 들어오고 처리.
+   - 단순 출력만 하기 때문에 메소드 레퍼런스 기능을 이용해 간결하게 작성!
 2. `for-of{...}`
-    - 기존에는 for-of 문을 사용해 출력이 가능하다고 함.
-    - 하지만 조금이나마 더 간결한 forEach를 사용하는 것이 좋아 보임.
+   - 기존에는 for-of 문을 사용해 출력이 가능하다고 함.
+   - 하지만 조금이나마 더 간결한 forEach를 사용하는 것이 좋아 보임.
 
 ### 2-2. Collection
 
@@ -202,11 +206,11 @@ public static void main(String[] args) {
 ```
 
 1. Spliterator<String> spliterator = names.spliterator();
-    - iterator와 비슷하지만 분할할 수 있는 기능을 가진 Iterator 를 만들어 반환
+   - iterator와 비슷하지만 분할할 수 있는 기능을 가진 Iterator 를 만들어 반환
 2. spliterator.tryAdvance(System.out::println)
-    - iterator의 hasNext()메소드와 유사
-    - 다만 내부 메소드에 파라미터로 forEach()와 동일하게 Functional Interface인 Consumer가 들어오고 더 이상 들어올게 없을 경우 false를 반환
-    - 이 예제에서는 들어온 값을 단순 출력하는 메소드 레퍼런스를 사용
+   - iterator의 hasNext()메소드와 유사
+   - 다만 내부 메소드에 파라미터로 forEach()와 동일하게 Functional Interface인 Consumer가 들어오고 더 이상 들어올게 없을 경우 false를 반환
+   - 이 예제에서는 들어온 값을 단순 출력하는 메소드 레퍼런스를 사용
 
 > 여기까지는 iterator와 차이가 없다. trySplit을 사용해보자.
 
@@ -236,16 +240,18 @@ youngjun
 ```
 
 1. `Spliterator<String> trySplit = spliterator.trySplit();`
-    - spliterator에서 trySplit()메소드를 호출하게되면 해당 spliterator에서 앞에서부터 절반의 요소를 꺼내 새로운 spliterator를 만들어 반환
 
-    <img src = "https://user-images.githubusercontent.com/42997924/139379819-9390b364-6120-4b51-a766-79b4a6d81e8e.png" width="50%" height="50%">
+   - spliterator에서 trySplit()메소드를 호출하게되면 해당 spliterator에서 앞에서부터 절반의 요소를 꺼내 새로운 spliterator를 만들어 반환
+
+   <img src = "https://user-images.githubusercontent.com/42997924/139379819-9390b364-6120-4b51-a766-79b4a6d81e8e.png" width="50%" height="50%">
 
    🔼 trySplit() 실행 결과
-
 2. `while(spliterator.tryAdvance(System.out::println));`
-    - trySplit()을 통해 앞의 두 String(yj, youngjun)이 분할되어 빠져나갔기 때문에 뒤의 두 값만 출력
+
+   - trySplit()을 통해 앞의 두 String(yj, youngjun)이 분할되어 빠져나갔기 때문에 뒤의 두 값만 출력
 3. `while(trySplit.tryAdvance(System.out::println));`
-    - spliterator 에서 가져온 앞 두 값(yj, youngjun)을 출력
+
+   - spliterator 에서 가져온 앞 두 값(yj, youngjun)을 출력
 
 **removeIf**
 
@@ -265,7 +271,7 @@ public static void main(String[] args) {
 ```
 
 1. `names.removeIf(s -> s.startsWith("y"));`
-    - names를 순회하며 각 요소들 중 단어가 'y'로 시작하는 단어를 찾아 삭제
+   - names를 순회하며 각 요소들 중 단어가 'y'로 시작하는 단어를 찾아 삭제
 
 ### 2-3. Comparator
 
@@ -292,9 +298,9 @@ public static void main(String[] args) {
 ```
 
 1. `Comparator<String> compareToIgnoreCase = String::compareToIgnoreCase`
-    - 메소드 레퍼런스를 메소드 체이닝 방식으로 사용할수는 없기에 분리하여 Comparator 타입의 Functional Interface인 compareToIgnoreCase 를 만들어준다.
+   - 메소드 레퍼런스를 메소드 체이닝 방식으로 사용할수는 없기에 분리하여 Comparator 타입의 Functional Interface인 compareToIgnoreCase 를 만들어준다.
 2. `names.sort(compareToIgnoreCase.reversed());`
-    - 미리 선언해놓은 String 의 정렬 기준 메소드 레퍼런스에 `reversed()` 메소드를 호출해 역순으로 정렬
+   - 미리 선언해놓은 String 의 정렬 기준 메소드 레퍼런스에 `reversed()` 메소드를 호출해 역순으로 정렬
 
 > ❓ 만약, 여기서 다음 정렬조건을 사용하여 정렬을 이어가고싶다면 thenComparing() 메소드를 이용하여 추가적인 정렬을 할 수 있다.
 

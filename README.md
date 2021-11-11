@@ -4,7 +4,7 @@
 
 ## Study Guide
 - 1주차 : [함수형 인터페이스와 람다](/1-함수형-인터페이스와-람다)
-- 2주차 : [인터페이스의 변화 / Stream](/2-인터페이스의-변화+Stream)
+- 2주차 : [인터페이스의 변화 / Stream](/2-인터페이스의-변화-Stream)
 - 3주차 : Optional / Date / Time
 - 4주차 : CompletableFuture / annotation
 - Reference : [인프런 백기선님 강의](https://www.inflearn.com/course/the-java-java8)
