@@ -457,6 +457,10 @@ public static void main(String[] args) {
 
 ---
 
+#### [2주차 다음 글 - Stream](README-AFTER.md)
+
+---
+
 **Reference**
 
 - [백기선 인프런 강의 : 더 자바, Java8](https://www.inflearn.com/course/the-java-java8/dashboard)
