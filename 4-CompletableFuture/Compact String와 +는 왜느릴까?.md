@@ -64,21 +64,21 @@ System.out.println("안녕, 안녕, 안녕, 안녕, 안녕, 안녕, 안녕, 안�
 
 Java 11버전은 
 
-#0:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+`#0:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;`
 이렇게 처리한다면...
 
 8버전은 이렇게 StringBuilder로 붙임 
-
+```
     19: invokevirtual #6                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
       22: ldc           #7                  // String 1234
       24: invokevirtual #6                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
+```
 
 
 ## 덧붙이기 Java 8에서 +가 느린이유 SB에 비해서 훨씬 훨씬 느린이유
 
-+로 붙이면 ... 바이트 코드는 다음과 같이 나오고 
-
++로 붙이면 바이트 코드는 다음과 같이 나오고 
+```
  public static void main(java.lang.String[]);
     Code:
        0: ldc           #2                  // String !23
@@ -103,9 +103,11 @@ Java 11버전은
       40: aload_1
       41: invokevirtual #10                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
       44: return
-
+```
+    
 StringBuilder로 하면 아래처럼 나오는데  
-
+    
+```
 Code:
        0: new           #2                  // class java/lang/StringBuilder
        3: dup
@@ -127,13 +129,14 @@ Code:
       34: aload_1
       35: invokevirtual #9                  // Method java/io/PrintStream.println:(Ljava/lang/Object;)V
       38: return
+```
 
 가장중요한 것은 + 한경우 다음 로직을 타는것 처럼 보인다.  StringBuilder를 생성  초기화 적제 -> Append후 붙혀주기 -> toString으로.. 바꾼다음에 적재 -> 그리고 다시 초기화 적제-> Append를하니까 느릴 수 밖에 없는구조...
 
 Java 11버전그러니까 (9버전부터는 makeConcatWithConstants을 통해서 획기적인 개선 그래서 둘다 똑같음.)
 
 +를 쓰면 이렇게 나와버림.
-
+```
  Code:
        0: ldc           #2                  // String !23
        2: astore_1
@@ -144,8 +147,9 @@ Java 11버전그러니까 (9버전부터는 makeConcatWithConstants을 통해서
        8: if_icmpge     24
       11: aload_1
       12: invokedynamic #4,  0              // InvokeDynamic #0:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+```
+StringBuilder를 쓰는 경우는 똑같음 근데 속도는 StringBuilder가 좀더 빠름. 대신 9버전의 concat방식이 8버전보다는 10배이상은 빨라보임.
 
-StringBuilder를 쓰는 경우는 똑같음 근데 속도는 StringBuilder가 좀더 빠름. 대신 9ㅂ전의 concat방식이 8버전보다는 10배이상은 빨라보임.
 
 10배 빠른지 직접 해보면 더 좋아보인다ㅎ
 
