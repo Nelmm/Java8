@@ -2,7 +2,7 @@
 
 ![image-20211115105914730](img/facebook.png)
 
-스터디 도중에 페이스북에서 본 기억이 나서, 공유했었던 의제이다.  **+가 StringBuilder보다빠릅니다.** 라고 언급했었는데, 막상 자세히 찾아보니까 이 원글만 보고 한번 확인해보는 과정이 필요했었으나 그리고 심지어 아래쪽을 보면, 자세히 나와있음에도 불구하고 더 빠르다는 것에 심취해 있어 잘못된 정보를 전달할뻔 했었다. 
+스터디 도중에 페이스북에서 본 기억이 나서, 공유했었던 의제이다.  **+가 StringBuilder보다 빠릅니다.** 라고 언급했었는데, 막상 자세히 찾아보니까 이 원글만 보고 한번 확인해보는 과정이 필요했었으나 그리고 심지어 아래쪽을 보면, 자세히 나와있음에도 불구하고 더 빠르다는 것에 심취해 있어 잘못된 정보를 전달할뻔 했었다. 
 
 ## Compact String
 
@@ -68,6 +68,7 @@ Java 11버전은
 이렇게 처리한다면...
 
 8버전은 이렇게 StringBuilder로 붙임 
+
 ```
     19: invokevirtual #6                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
       22: ldc           #7                  // String 1234
@@ -78,6 +79,7 @@ Java 11버전은
 ## 덧붙이기 Java 8에서 +가 느린이유 SB에 비해서 훨씬 훨씬 느린이유
 
 +로 붙이면 바이트 코드는 다음과 같이 나오고 
+
 ```
  public static void main(java.lang.String[]);
     Code:
@@ -104,9 +106,8 @@ Java 11버전은
       41: invokevirtual #10                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
       44: return
 ```
-    
+
 StringBuilder로 하면 아래처럼 나오는데  
-    
 ```
 Code:
        0: new           #2                  // class java/lang/StringBuilder
@@ -136,6 +137,7 @@ Code:
 Java 11버전그러니까 (9버전부터는 makeConcatWithConstants을 통해서 획기적인 개선 그래서 둘다 똑같음.)
 
 +를 쓰면 이렇게 나와버림.
+
 ```
  Code:
        0: ldc           #2                  // String !23
@@ -150,8 +152,37 @@ Java 11버전그러니까 (9버전부터는 makeConcatWithConstants을 통해서
 ```
 StringBuilder를 쓰는 경우는 똑같음 근데 속도는 StringBuilder가 좀더 빠름. 대신 9버전의 concat방식이 8버전보다는 10배이상은 빨라보임.
 
+```Java
+//이런 코드를 작성하면...
+Long start = System.currentTimeMillis();
+String a = "1234";
+for (int i = 0; i <100000; i++) {
+	a+="92292929";
+}
+System.out.println(System.currentTimeMillis()-start);
+```
 
-10배 빠른지 직접 해보면 더 좋아보인다ㅎ
+Java 11: 4318 Java 8: 31110 => 헉 진짜 10배 가량 차이가 난다.  
+
+Compile방식의 차이가 속도의 차이가 발생한다.
+
+이런 결과를 만들어낸 `makeConcatWithConstants` 로 개선된 이유에 대해서 찾아봤는데, 이 로직을 찾는건 좀 어려웠고, 자바 9부터 **Indify String Concatenation** 를 통해서, 개선 사항에 포함되어있었는데...
+
+원문: http://openjdk.java.net/jeps/280
+
+오역이 있을가능성이 있지만, 맥락적으로 파악해 보았다.
+
+결국 8버전 바이트코드와 같이 StringBuilder를 잘못 쓰는 케이스가 있기 때문에, 이러한 String을 붙이는 것에 대해서 개선을 하였고, 그것이 makeConcatWithConstants로 조금 더 빠른 속도로 +를 개선하는 방향 버전업그레이드 방향을 잡은듯했고, 실제로 반영이 되어있다.
+
+makeConcatWithConstants의 작동 로직역시 궁금하였으나, 부족한 검색 실력으로 찾지는 못했고... 그리고 찾더라도 너무너무 딥다이브하게 들어가는 것 같아서 일단 개선 되었다는 점 그리고 개선의 이유까지만 찾아서 마무리했다.
+
+## 결론 
+
+'+' 는 실제로 StringBuilder보다는 느린것은 사실... 하지만 속도 자체는 8에 비해서는 말그대로 10배나 차이날정도로 빨라졌음. 매우 많은 수(최소 10만 이상)를 붙이는 것이 아닌 이상.... +를 통해서 얻는 손해는 커지 않아 보인다. 
+
+적은 갯수의 String을 합치는 것에 대해서는 오로지 속도적인 측면에서는 그렇게 느리지 않다고 봐도 좋을 것 같다. 
+
+
 
 http://wonwoo.ml/index.php/post/1039
 
