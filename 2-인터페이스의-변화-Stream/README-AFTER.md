@@ -451,7 +451,7 @@ Stream.of("a", "b", "c", "d", "e")
 
 실행 결과
 
-```json
+```bash
 map: a
 filter: A
 forEach: A
@@ -487,7 +487,7 @@ Stream.of("a", "b", "c", "d", "e")
 
 실행 결과
 
-```json
+```bash
 filter: a
 map: a
 forEach: A
