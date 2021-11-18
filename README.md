@@ -4,7 +4,7 @@
 
 ## Study Guide
 - 1주차 : [함수형 인터페이스와 람다](/1-함수형-인터페이스와-람다)
-- 2주차 : [인터페이스의 변화 / Stream](/2-인터페이스의-변화+Stream)
+- 2주차 : [인터페이스의 변화 / Stream](/2-인터페이스의-변화-Stream)
 - 3주차 : [Optional / Date / Time](/3-Optional과Date-Time)
 - 4주차 : [CompletableFuture](4-CompletableFuture)
 - 5주차 : [ETC & 회고](5-ETC)
