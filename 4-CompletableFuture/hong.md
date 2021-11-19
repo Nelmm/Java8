@@ -144,7 +144,7 @@ public static void main(String[] args) {
 <br><br>
 
 ## Executors
-![threadpool](/java/image/threadpool.png)
+![threadpool](https://user-images.githubusercontent.com/42997924/142596222-8710c7ee-3434-4164-a4db-78a443ca8ae3.png)
 
 고수준의 Concurrency 프로그래밍을 지원하는 라이브러리로 위와 같은 스레드 풀 라이브러리 들을 이용하여 구현되어있다.
 
